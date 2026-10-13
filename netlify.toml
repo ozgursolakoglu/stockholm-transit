@@ -1,0 +1,10 @@
+# Netlify ayarları: derleme gerekmez, dosyalar olduğu gibi yayınlanır.
+[build]
+  publish = "."
+
+# /v1/... isteklerini SL Transport API'ye aktarır (aynı alan adı üzerinden, CORS sorunu olmadan).
+[[redirects]]
+  from = "/v1/*"
+  to = "https://transport.integration.sl.se/v1/:splat"
+  status = 200
+  force = true
