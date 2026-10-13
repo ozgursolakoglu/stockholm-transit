@@ -1,35 +1,35 @@
 # Stockholm Transit – Live Digital Shadow
 
-Stockholm metrosu (Tunnelbana) ve banliyö treni (Pendeltåg) için gerçek zamanlı verilerle çalışan bir pano. Yapay zekâ ve dijital ikiz derslerinde kullanılmak üzere hazırlanmıştır. Arayüz İngilizcedir.
+A live dashboard for the Stockholm metro (Tunnelbana) and commuter rail (Pendeltåg), built for teaching artificial intelligence and digital twin concepts.
 
-**Özellikler**
+## Features
 
-- Metro (hat 10, 11, 13, 14, 17, 18, 19) ve banliyö treni (hat 40, 41, 43, 44) haritası, katmanlar ayrı ayrı açılıp kapatılabilir
-- Trenlerin tahmini anlık konumu; 2 dakikadan fazla gecikenler kırmızı çerçeveli
-- Arama kutusundan SL ağındaki herhangi bir istasyon veya durak (otobüs, tramvay, vapur dahil) seçilebilir
-- Seçilen durak için göstergeler: next departure, departures in the next 30 min, average delay, on-time rate, trains due in 10 min, cancellations, kalkış tablosu, 10 dakikalık aralıklarla kalkış grafiği ve service alerts
-- Schematic / Geographic görünümleri arasında geçiş
-- Bağlantı yoksa otomatik simülasyon modu
+- Map of the metro (lines 10, 11, 13, 14, 17, 18, 19) and commuter rail (lines 40, 41, 43, 44); each network can be shown or hidden
+- Estimated live train positions; trains delayed by 2 minutes or more are outlined in red
+- Search any station or stop on the SL network, including bus, tram and boat stops
+- Indicators for the selected stop: next departure, departures in the next 30 minutes, average delay, on-time rate, trains due in the next 10 minutes, cancellations, a departure board, departures per 10-minute window and service alerts
+- Switch between schematic and geographic views
+- Falls back to simulated data automatically when the live feed is unavailable
 
-Veri kaynağı: [SL Transport API](https://www.trafiklab.se/api/other-apis/sl/transport/) (API anahtarı gerektirmez). Verilerin kullanımı için SL/Trafiklab lisans koşullarına bakın.
+Data source: [SL Transport API](https://www.trafiklab.se/api/other-apis/sl/transport/) (no API key required). See the SL/Trafiklab licence terms for data usage.
 
-## Nasıl çalışır?
+## How it works
 
-Sayfa tamamen statiktir; sunucu kodu yoktur. `netlify.toml` dosyası, sayfanın `/v1/...` adresine yaptığı istekleri Netlify üzerinden SL'ye aktarır. Böylece tarayıcı aynı alan adıyla konuşur ve CORS sorunu oluşmaz.
+The site is fully static, with no server code. `netlify.toml` forwards requests made to `/v1/...` through Netlify to the SL API, so the browser talks to the same domain and no CORS issues occur.
 
-## GitHub'dan Netlify'a yayınlama
+## Deploying from GitHub to Netlify
 
-1. Bu dosyaları bir GitHub reposuna yükleyin (`index.html`, `netlify.toml`, `README.md`, `.gitignore`).
-2. [app.netlify.com](https://app.netlify.com) adresinde GitHub hesabınızla oturum açın.
-3. **Add new site > Import an existing project > GitHub** adımlarını izleyin ve repoyu seçin.
-4. Ayarları boş bırakın (Build command: boş, Publish directory: `.`). Ayarlar `netlify.toml` dosyasından okunur.
-5. **Deploy**'a basın. Sayfa `https://SITE-ADI.netlify.app` adresinde yayına girer.
+1. Push these files to a GitHub repository (`index.html`, `netlify.toml`, `README.md`).
+2. Sign in at [app.netlify.com](https://app.netlify.com) with your GitHub account.
+3. Choose **Add new site > Import an existing project > GitHub** and select the repository.
+4. Leave the build settings empty; they are read from `netlify.toml`.
+5. Click **Deploy**. The site goes live at `https://SITE-NAME.netlify.app`.
 
-Bundan sonra GitHub'a yaptığınız her değişiklik Netlify'da otomatik olarak yeniden yayınlanır. Site adını **Site configuration > Change site name** bölümünden değiştirebilirsiniz.
+Every change pushed to GitHub is redeployed on Netlify automatically. You can rename the site under **Site configuration > Change site name**.
 
-## Sınırlamalar
+## Limitations
 
-- Trenlerin konumu GPS değildir; istasyonlardaki "sonraki tren" tahminlerinden hesaplanır.
-- Banliyö treni hatlarının durak listeleri sadeleştirilmiştir. SL'de değişiklik olursa `index.html` içindeki `LINES` bölümünden düzenlenebilir.
-- Bazı istasyon adları SL kayıtlarıyla eşleşmezse sağ üstteki mesajda listelenir.
-- Sistem trenleri yalnızca izler, yönetmez: bu bir dijital ikiz değil, **dijital gölgedir**.
+- Train positions are not GPS-based; they are estimated from each station's next-departure predictions.
+- Commuter rail stop patterns are simplified. If SL changes them, edit the `LINES` section in `index.html`.
+- Station names that cannot be matched to SL records are listed in the status message at the top of the side panel.
+- The system only observes trains and cannot control them, so it is a **digital shadow** rather than a true digital twin.
